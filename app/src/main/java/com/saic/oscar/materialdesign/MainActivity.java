@@ -4,6 +4,8 @@ import android.content.res.TypedArray;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
     NavigationAdapter navAdapter;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,9 @@ public class MainActivity extends ActionBarActivity {
         View header = getLayoutInflater().inflate(R.layout.header,null);
         navList.addHeaderView(header);
 
+        navDrawerLayout.setDrawerListener(newToggle());
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
+
         navIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
         titulos = getResources().getStringArray(R.array.nav_options);
         navItms = new ArrayList<ItemObject>();
@@ -54,6 +60,23 @@ public class MainActivity extends ActionBarActivity {
 
         navAdapter = new NavigationAdapter(this,navItms);
         navList.setAdapter(navAdapter);
+    }
+
+    private ActionBarDrawerToggle newToggle(){
+        return new ActionBarDrawerToggle(this,/*contexto donde se encuentra el navDrawer*/
+                navDrawerLayout,              /*Drawer que linkearemos a la barra de acciones*/
+                /*Falta toolbar*/
+                R.string.app_name,            /*Descripcion al abrir open drawer*/
+                R.string.hello_world          /*Descripcion al cerrar open drawer*/
+        ){
+            public void onDrawerClosed(View view){
+                Log.e("Cerrado completo","aa");
+            }
+
+            public void onDrawerOpened(View drawerView){
+                Log.e("Apertura completa","aa");
+            }
+        };
     }
 
 }
