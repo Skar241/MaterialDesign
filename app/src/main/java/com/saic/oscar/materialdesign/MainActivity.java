@@ -7,6 +7,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +33,9 @@ import java.util.ArrayList;
 * y generar el material design, posteriormente descargamos como xml, lo abrimos y copiamos los colores
 * en el archivo color.xml
 * utilizamos la propiedad onclick para que se active el boton flotante
+* Checar el archivo activity_main, toolbar, sombra
 * */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout navDrawerLayout;
     private ListView navList;
@@ -40,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<ItemObject> navItms;
     private TypedArray navIcons;
     NavigationAdapter navAdapter;
+    private Toolbar toolbar;
 
 
 
@@ -48,6 +52,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(toolbar);
+
         navDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.lista);
         //declaramos el header
@@ -55,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
         navList.addHeaderView(header);
 
         navDrawerLayout.setDrawerListener(newToggle());
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         navIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
         titulos = getResources().getStringArray(R.array.nav_options);
@@ -80,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle newToggle(){
         return new ActionBarDrawerToggle(this,/*contexto donde se encuentra el navDrawer*/
                 navDrawerLayout,              /*Drawer que linkearemos a la barra de acciones*/
-                /*Falta toolbar*/
+                toolbar,
                 R.string.app_name,            /*Descripcion al abrir open drawer*/
                 R.string.hello_world          /*Descripcion al cerrar open drawer*/
         ){
