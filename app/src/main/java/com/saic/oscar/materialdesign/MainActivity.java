@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.saic.oscar.materialdesign.fragmentos.Home;
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private TypedArray navIcons;
     NavigationAdapter navAdapter;
     private Toolbar toolbar;
+    private TextView titulo;
+    private ImageButton imBoton;
+    private boolean close=true;
 
 
 
@@ -52,17 +57,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.appbar);
-        setSupportActionBar(toolbar);
-
+        titulo = (TextView) findViewById(R.id.textView);
         navDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.lista);
+        toolbar = (Toolbar) findViewById(R.id.appbar);
+        imBoton = (ImageButton) findViewById(R.id.imageButton);
+
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         //declaramos el header
         View header = getLayoutInflater().inflate(R.layout.header,null);
         navList.addHeaderView(header);
 
         navDrawerLayout.setDrawerListener(newToggle());
-
 
         navIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
         titulos = getResources().getStringArray(R.array.nav_options);
@@ -81,6 +89,16 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        imBoton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (close)
+                    navDrawerLayout.openDrawer(navList);
+                else
+                    navDrawerLayout.closeDrawer(navList);
+
+            }
+        });
+
         mostrarFragmentPos(1);
     }
 
@@ -93,10 +111,12 @@ public class MainActivity extends AppCompatActivity {
         ){
             public void onDrawerClosed(View view){
                 Log.e("Cerrado completo","aa");
+                close=true;
             }
 
             public void onDrawerOpened(View drawerView){
                 Log.e("Apertura completa","aa");
+                close=false;
             }
         };
     }
@@ -125,7 +145,8 @@ public class MainActivity extends AppCompatActivity {
             navList.setItemChecked(position, true);
             navList.setSelection(position);
 
-            setTitle(titulos[position - 1]);
+            //setTitle(titulos[position - 1]);
+            titulo.setText(titulos[position - 1]);
 
             navDrawerLayout.closeDrawer(navList);
         }else{
